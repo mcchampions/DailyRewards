@@ -1,0 +1,62 @@
+# ==========================================
+# DailyRewards v2.0 - 消息配置文件
+# ==========================================
+config-version: 3
+# 支持 MiniMessage 格式和传统 & 颜色代码
+# 变量: %player% %time% %remaining% %login_days% %total_time%
+
+prefix: "<dark_aqua>[<aqua>每日奖励</aqua>]</dark_aqua> "
+
+# 通用消息
+general:
+  no-permission: "<red>你没有权限使用此命令。</red>"
+  player-only: "<red>只有玩家可以使用此命令。</red>"
+  player-not-found: "<red>玩家不在线或不存在。</red>"
+  config-reloaded: "<green>配置已重载。</green>"
+  unknown-subcommand: "<red>未知子命令。使用 /dr help 查看帮助。</red>"
+
+# GUI相关
+gui:
+  disabled: "<red>GUI模式已被管理员禁用。</red>"
+  already-claimed: "<red>你已经领取过这个奖励了!</red>"
+  not-yet-unlocked: "<red>你还需要 %remaining% 分钟才能领取这个奖励!</red>"
+  claim-success: "<green>恭喜! 你领取了在线 %time% 分钟的奖励!</green>"
+  inventory-full: "<red>你的背包已满,奖励已暂存为待领取! <click:run_command:/dr open><gold>[点击打开菜单]</gold></click> <red>清理背包后重新领取</red>"
+
+# 自动发放
+auto-grant:
+  actionbar: "<green>恭喜! 你获得了在线 %time% 分钟的奖励!</green>"
+  chat: "<green>恭喜! 你获得了在线 %time% 分钟的奖励!</green>"
+
+# 提醒消息
+reminder:
+  clickable: "<yellow>你已在线 %time% 分钟, 可以领取奖励! <click:run_command:/dr open><green>[点击领取]</green></click></yellow>"
+
+# 登录系统
+login:
+  login: "<green>欢迎回来! 你已连续登录 %login_days% 天.</green>"
+  milestone: "<gold>连续登录 %days% 天里程碑奖励已发放!</gold>"
+  reset-warning: "<yellow>你昨天没有登录, 连续登录已重置.</yellow>"
+
+# 排行榜
+leaderboard:
+  header: "<dark_aqua>===== <aqua>在线时长排行榜</aqua> =====</dark_aqua>"
+  entry: "<gray>#%rank%</gray> <yellow>%player%</yellow> <gray>-</gray> <white>%time% 分钟</white>"
+  empty: "<gray>暂无数据</gray>"
+
+# 统计信息
+info:
+  header: "<dark_aqua>===== <aqua>%player% 的奖励统计</aqua> =====</dark_aqua>"
+  daily-time: "<gray>今日在线: <yellow>%daily_time% 分钟</yellow></gray>"
+  total-time: "<gray>总在线: <yellow>%total_time% 分钟</yellow></gray>"
+  login: "<gray>连续登录: <yellow>%login_days% 天</yellow></gray>"
+  segments: "<gray>今日领取: <yellow>%claimed%/%total_segments%</yellow> 个分段</gray>"
+
+# 帮助菜单
+help:
+  - "<dark_aqua>===== <aqua>每日奖励帮助</aqua> =====</dark_aqua>"
+  - "<yellow>/dr open</yellow> <gray>- 打开奖励GUI</gray>"
+  - "<yellow>/dr info [玩家]</yellow> <gray>- 查看统计信息</gray>"
+  - "<yellow>/dr top [类型]</yellow> <gray>- 查看排行榜</gray>"
+  - "<yellow>/dr reload</yellow> <gray>- 重载配置(管理员)</gray>"
+  - "<yellow>/dr reset [玩家]</yellow> <gray>- 重置数据(管理员)</gray>"

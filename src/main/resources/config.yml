@@ -1,0 +1,136 @@
+# ==========================================
+# DailyRewards v2.0 - 主配置文件
+# ==========================================
+config-version: 3
+
+# 每日重置时间 (24小时制, 服务器本地时间)
+reset:
+  hour: 0
+  minute: 0
+
+# 在线时间追踪
+tracking:
+  # 检测间隔(秒) - 每隔多少秒累加一次在线时间
+  interval: 60
+  # 是否使用异步任务(推荐开启)
+  async: true
+# 奖励模式
+mode:
+  # 是否自动发放奖励
+  auto-grant: true
+  # 是否允许GUI手动领取
+  gui-enabled: true
+  # 自动发放时使用ActionBar通知(否则使用聊天栏)
+  auto-actionbar: false
+  # 自动发放时播放音效
+  auto-sound: true
+  # 达到条件时发送可点击提醒消息
+  auto-reminder: true
+
+# 连续登录系统
+login:
+  enabled: true
+  # 每连续登录的奖励加成倍率 (公式: 基础奖励 * (1 + login_days * multiplier))
+  multiplier: 0.05
+  # 最大连续天数影响倍率的天数上限
+  max-bonus: 30
+  # 连续登录多少天后可领取额外里程碑奖励
+  milestones:
+    7:
+      rewards:
+        - type: item
+          material: DIAMOND
+          amount: 5
+        - type: money
+          amount: 200.0
+        - type: message
+          message: "&e%player% &6连续登录 &c7天&6，获得额外奖励!"
+    14:
+      rewards:
+        - type: item
+          material: NETHERITE_INGOT
+          amount: 1
+        - type: money
+          amount: 500.0
+        - type: title
+          title: "&6&l登录达人"
+          subtitle: "&e连续14天登录奖励!"
+    30:
+      rewards:
+        - type: item
+          material: NETHERITE_INGOT
+          amount: 3
+        - type: money
+          amount: 1000.0
+        - type: title
+          title: "&5&l传奇登录者"
+          subtitle: "&d连续30天登录! 感谢你的支持!"
+
+# 数据库配置
+database:
+  # 数据库类型: sqlite 或 mysql
+  type: sqlite
+  sqlite:
+    file: playerdata.db
+  mysql:
+    host: localhost
+    port: 3306
+    database: dailyrewards
+    user: root
+    password: ""
+    properties:
+      useSSL: false
+      serverTimezone: UTC
+      allowPublicKeyRetrieval: true
+    # HikariCP连接池设置
+    pool:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 5000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+# 数据存储
+storage:
+  type: database
+  # 自动保存间隔(秒) - 仅将脏数据(有过改动的)写入磁盘
+  save-interval: 1200
+  # 异步保存(推荐开启)
+  async-save: true
+
+# 内存缓存
+cache:
+  # 最大缓存玩家数 - 超过后按LRU淘汰最久未访问的离线玩家
+  max-size: 10000
+
+# GUI设置
+gui:
+  # 使用Paper组件API (Paper 1.20.4+推荐)
+  use-paper-builder: true
+  # 关闭GUI时是否自动刷新
+  auto-refresh: true
+  # 领取后GUI重新打开延迟(tick)
+  reopen-delay: 2
+
+# 排行榜设置
+leaderboard:
+  # 排行榜显示人数
+  max-entries: 10
+  # 默认排行榜类型: total_time 为在线总时间; 也可设为 daily_time 
+  default-type: total_time
+
+# 全息排行榜设置
+hologram:
+  # 全息提供商: "text_display"(Paper原生,无需插件) 或 "decent_holograms"(需安装DecentHolograms插件)
+  # DecentHolograms 优势: 更美观、无需管理实体持久化、支持更多显示选项
+  provider: text_display
+  # 自动刷新间隔(秒)
+  update-interval: 60
+
+# PlaceholderAPI 设置
+placeholder:
+  # 占位符前缀 (默认 dailyrewards, 可改为 dr 以使用 %dr_daily_time% 等)
+  identifier: dailyrewards
+
+# 调试
+debug: false

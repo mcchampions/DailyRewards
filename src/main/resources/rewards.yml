@@ -1,0 +1,168 @@
+# ==========================================
+# DailyRewards v2.0 - 奖励配置文件
+# ==========================================
+# 组格式: groups.<组名>
+# 权限节点: dailyrewards.group.<组名>
+# 匹配规则: 优先匹配非default组，按group-priority排序
+# 时间单位: 秒
+
+group-priority:
+  - default
+
+groups:
+  default:
+    - time: 30
+      display-item:
+        material: COOKIE
+        name: "<yellow>30s奖励</yellow>"
+        lore:
+          - "<gray>在线 <yellow>30s</yellow> 奖励</gray>"
+      rewards:
+        - type: experience
+          amount: 3
+        - type: sound
+          sound: ENTITY_EXPERIENCE_ORB_PICKUP
+          volume: 0.5
+          pitch: 1.0
+    - time: 60
+      display-item:
+        material: COOKIE
+        name: "<yellow>1分钟奖励</yellow>"
+        lore:
+          - "<gray>在线 <yellow>1分钟</yellow> 奖励</gray>"
+      rewards:
+        - type: experience
+          amount: 10
+        - type: sound
+          sound: ENTITY_EXPERIENCE_ORB_PICKUP
+          volume: 0.5
+          pitch: 1.0
+
+    - time: 300
+      display-item:
+        material: APPLE
+        name: "<yellow>5分钟奖励</yellow>"
+        lore:
+          - "<gray>在线 <yellow>5分钟</yellow> 奖励</gray>"
+      rewards:
+        - type: item
+          material: APPLE
+          amount: 3
+        - type: experience
+          amount: 30
+
+    - time: 600
+      display-item:
+        material: GOLDEN_APPLE
+        name: "<gold>10分钟奖励</gold>"
+        lore:
+          - "<gray>在线 <yellow>10分钟</yellow> 奖励</gray>"
+      rewards:
+        - type: item
+          material: GOLDEN_APPLE
+          amount: 1
+        - type: experience
+          amount: 30
+        - type: money
+          amount: 10.0
+
+    - time: 1800
+      display-item:
+        material: APPLE
+        name: "<aqua>30分钟奖励</aqua>"
+        lore:
+          - "<gray>在线 <yellow>30分钟</yellow> 奖励</gray>"
+      rewards:
+        - type: item
+          material: APPLE
+          amount: 64
+        - type: experience
+          amount: 35
+        - type: command
+          command: "say %player% 达到了30分钟在线奖励!"
+          console: true
+        - type: sound
+          sound: ENTITY_PLAYER_LEVELUP
+          volume: 1.0
+          pitch: 1.0
+
+    - time: 3600
+      display-item:
+        material: EMERALD
+        name: "<green>1小时奖励</green>"
+        lore:
+          - "<gray>在线 <yellow>1小时</yellow> 奖励</gray>"
+      rewards:
+        - type: item
+          material: EMERALD
+          amount: 3
+        - type: money
+          amount: 500.0
+        - type: sound
+          sound: ENTITY_PLAYER_LEVELUP
+          volume: 1.0
+          pitch: 1.2
+
+    - time: 7200
+      display-item:
+        material: DIAMOND
+        name: "<gold>2小时奖励</gold>"
+        lore:
+          - "<gray>在线 <yellow>2小时</yellow> 奖励</gray>"
+      rewards:
+        - type: item
+          material: DIAMOND
+          amount: 2
+        - type: experience
+          amount: 350
+
+    - time: 10800
+      display-item:
+        material: DIAMOND
+        name: "<dark_red>3小时奖励</dark_red>"
+        lore:
+          - "<gray>在线 <yellow>3小时</yellow> 奖励</gray>"
+      rewards:
+        - type: item
+          material: DIAMOND
+          amount: 1
+        - type: money
+          amount: 560.0
+        - type: experience
+          amount: 400
+
+    - time: 14400
+      display-item:
+        material: ENCHANTED_GOLDEN_APPLE
+        name: "<light_purple>4小时奖励</light_purple>"
+        lore:
+          - "<gray>在线 <yellow>4小时</yellow> 奖励</gray>"
+      rewards:
+        - type: item
+          material: ENCHANTED_GOLDEN_APPLE
+          amount: 2
+        - type: money
+          amount: 600.0
+        - type: experience
+          amount: 500
+
+    - time: 21600
+      display-item:
+        material: DIAMOND
+        name: "<yellow><bold>6小时奖励</bold></yellow>"
+        lore:
+          - "<gray>在线 <yellow>6小时</yellow> 奖励</gray>"
+      rewards:
+        - type: item
+          material: DIAMOND
+          amount: 1
+        - type: money
+          amount: 800.0
+        - type: experience
+          amount: 640
+        - type: title
+          title: "<gold>在线达人</gold>"
+          subtitle: "<yellow>%player% 已在线6小时!</yellow>"
+          fade-in: 10
+          stay: 70
+          fade-out: 20

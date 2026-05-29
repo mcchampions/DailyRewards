@@ -1,0 +1,64 @@
+# ==========================================
+# DailyRewards v2.0 - GUI 配置文件
+# ==========================================
+title: "<dark_aqua>每日在线奖励</dark_aqua>"
+size: 36
+
+# 玩家信息展示位 (显示头像和统计数据)
+player-info:
+  enabled: true
+  slot: 4
+  name: "<green>%player%</green>"
+  lore:
+    - "<gray>在线时长: <yellow>%time% 分钟</yellow></gray>"
+    - "<gray>总在线: <yellow>%total_time% 分钟</yellow></gray>"
+    - "<gray>连续登录: <yellow>%login_days% 天</yellow></gray>"
+    - ""
+    - "<aqua>点击刷新状态</aqua>"
+
+# 可领取状态
+unlocked:
+  material: LIME_STAINED_GLASS_PANE
+  name: "<green>%time% 分钟的奖励</green>"
+  lore:
+    - "<gray>你已累计在线 <yellow>%time% 分钟</yellow></gray>"
+    - ""
+    - "<green><bold>点击领取!</bold></green>"
+
+# 已领取状态
+claimed:
+  material: GRAY_STAINED_GLASS_PANE
+  name: "<gray>%time% 分钟的奖励 (已领取)</gray>"
+  lore:
+    - "<gray>你已领取过这个分段的奖励</gray>"
+
+# 未解锁状态
+locked:
+  material: RED_STAINED_GLASS_PANE
+  name: "<red>%time% 分钟的奖励 (未解锁)</red>"
+  lore:
+    - "<gray>还需在线 <yellow>%remaining% 分钟</yellow></gray>"
+    - "<gray>进度: %progress_bar%</gray>"
+
+# 玻璃板填充
+filler:
+  material: BLACK_STAINED_GLASS_PANE
+  name: " "
+
+# 进度条样式
+progress-bar:
+  length: 20
+  filled: "<green>█</green>"
+  empty: "<gray>░</gray>"
+
+# 奖励段在GUI中的槽位
+slot-order: [11, 12, 13, 14, 15, 20, 21, 22, 23, 24]
+
+# 导航按钮
+navigation:
+  info:
+    slot: 31
+    material: BOOK
+    name: "<gold>个人信息</gold>"
+    lore:
+      - "<gray>点击查看详细统计</gray>"

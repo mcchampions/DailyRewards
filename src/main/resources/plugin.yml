@@ -1,0 +1,54 @@
+name: DailyRewards
+version: 2.0.0
+main: me.qscbm.plugins.dailyrewards.DailyRewards
+api-version: "1.20"
+load: POSTWORLD
+authors: [QSCBM]
+description: 每日在线奖励系统 - 分段奖励、双模式领取、连续登录与排行榜
+softdepend: [Vault, PlaceholderAPI, DecentHolograms]
+
+commands:
+  dailyrewards:
+    description: 每日奖励主命令
+    aliases: [dr, reward, rewards]
+    usage: /<command> [open|reload|reset|info|top|help]
+
+permissions:
+  dailyrewards.use:
+    description: 允许打开GUI领取奖励
+    default: true
+  dailyrewards.update:
+    description: 允许手动更新在线奖励状态
+    default: op
+  dailyrewards.addtime:
+    description: 允许手动添加在线时间
+    default: op
+  dailyrewards.save:
+    description: 允许手动触发数据保存
+    default: op
+  dailyrewards.reload:
+    description: 允许重载配置文件
+    default: op
+  dailyrewards.reset:
+    description: 允许重置自己和他人的在线时间
+    default: op
+  dailyrewards.info:
+    description: 查看自己的统计数据
+    default: true
+  dailyrewards.info.others:
+    description: 查看他人的统计数据
+    default: op
+  dailyrewards.top:
+    description: 查看在线时长排行榜
+    default: true
+  dailyrewards.hologram:
+    description: 管理全息排行榜
+    default: op
+  dailyrewards.group.vip:
+    description: VIP组专属奖励表
+    default: false
+
+libraries:
+  - com.zaxxer:HikariCP:5.1.0
+  - org.xerial:sqlite-jdbc:3.45.3.0
+  - com.mysql:mysql-connector-j:8.4.0
