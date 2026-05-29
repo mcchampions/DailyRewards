@@ -478,11 +478,13 @@ public class RewardManager {
                 }
             }
             // Fill empty slots
+            int maxStack = item.getMaxStackSize();
             for (int i = 0; i < clone.length && remaining > 0; i++) {
                 if (clone[i] == null) {
+                    int toPlace = Math.min(remaining, maxStack);
                     clone[i] = item.clone();
-                    clone[i].setAmount(remaining);
-                    remaining = 0;
+                    clone[i].setAmount(toPlace);
+                    remaining -= toPlace;
                 }
             }
             if (remaining > 0) return false;

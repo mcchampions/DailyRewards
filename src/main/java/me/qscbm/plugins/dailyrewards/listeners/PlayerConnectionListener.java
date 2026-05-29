@@ -71,6 +71,7 @@ public class PlayerConnectionListener implements Listener {
             Map<Integer, List<Map<?, ?>>> milestones = plugin.getLoginManager().getMilestones();
             List<Map<?, ?>> rewards = milestones.get(days);
             if (rewards != null) {
+                player.sendMessage(plugin.getMessageManager().get("gui.processing"));
                 if (!plugin.getRewardManager().grantRawRewards(player, rewards, 0.0)) {
                     player.sendMessage(plugin.getMessageManager().get("gui.inventory-full"));
                     continue;

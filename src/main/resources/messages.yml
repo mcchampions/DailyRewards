@@ -20,11 +20,13 @@ gui:
   disabled: "<red>GUI模式已被管理员禁用。</red>"
   already-claimed: "<red>你已经领取过这个奖励了!</red>"
   not-yet-unlocked: "<red>你还需要 %remaining% 分钟才能领取这个奖励!</red>"
+  processing: "<yellow>正在发放奖励...</yellow>"
   claim-success: "<green>恭喜! 你领取了在线 %time% 分钟的奖励!</green>"
   inventory-full: "<red>你的背包已满,奖励已暂存为待领取! <click:run_command:/dr open><gold>[点击打开菜单]</gold></click> <red>清理背包后重新领取</red>"
 
 # 自动发放
 auto-grant:
+  processing: "<yellow>已达成在线 %time% 分钟, 奖励正在发放中...</yellow>"
   actionbar: "<green>恭喜! 你获得了在线 %time% 分钟的奖励!</green>"
   chat: "<green>恭喜! 你获得了在线 %time% 分钟的奖励!</green>"
 

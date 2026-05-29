@@ -125,6 +125,41 @@ public class PlayerTimeManager {
         });
     }
 
+    /**
+     * Preloads ALL player data from the database into cache for leaderboard display on startup.
+     * Should be called once during plugin initialization, before holograms refresh.
+     */
+    public void preloadAll() {
+        String today = LocalDate.now().toString();
+        List<PlayerDataRecord> records = databaseManager.loadAllPlayerData();
+        int loaded = 0;
+        for (PlayerDataRecord record : records) {
+            UUID uuid = record.uuid();
+            if (cache.containsKey(uuid)) continue;
+
+            PlayerData data = new PlayerData(uuid, 0, 0, today);
+            data.totalTime.set(record.totalTime());
+            data.loginDays.set(record.login());
+            if (today.equals(record.lastUpdated())) {
+                data.dailyTime.set(record.dailyTime());
+                data.claimedSegments.addAll(parseSegmentList(record.claimedSegments()));
+                data.remindedSegments.addAll(parseSegmentList(record.remindedSegments()));
+                String raw = record.milestonesClaimed();
+                if (raw != null && !raw.isEmpty()) {
+                    for (String part : raw.split(",")) {
+                        try { data.claimedMilestones.add(Integer.parseInt(part.trim())); }
+                        catch (NumberFormatException ignored) {}
+                    }
+                }
+            }
+            data.loaded = true;
+            data.online = false;
+            cache.put(uuid, data);
+            loaded++;
+        }
+        logger.info("Preloaded " + loaded + " player records for leaderboard");
+    }
+
     // --- Accessors ---
 
     public int getTime(UUID uuid) {
@@ -251,7 +286,7 @@ public class PlayerTimeManager {
      * No DB query — data is always up-to-date with real-time tracking.
      */
     public List<TopEntry> getTopPlayers(String orderBy, int limit) {
-        return cache.entrySet().stream()
+        List<TopEntry> result = cache.entrySet().stream()
                 .map(e -> new TopEntry(e.getKey(), e.getValue().dailyTime.get(),
                         e.getValue().totalTime.get(), e.getValue().loginDays.get()))
                 .sorted((a, b) -> switch (orderBy) {
@@ -261,6 +296,11 @@ public class PlayerTimeManager {
                 })
                 .limit(limit)
                 .toList();
+        for (TopEntry entry : result) {
+            PlayerData data = cache.get(entry.uuid());
+            if (data != null) data.lastAccess = System.currentTimeMillis();
+        }
+        return result;
     }
 
     public record TopEntry(UUID uuid, int dailyTime, int totalTime, int loginDays) {}

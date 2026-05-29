@@ -268,6 +268,26 @@ public class DatabaseManager {
         }, executor);
     }
 
+    public List<PlayerDataRecord> loadAllPlayerData() {
+        List<PlayerDataRecord> list = new ArrayList<>();
+        String sql = "SELECT * FROM player_data";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(new PlayerDataRecord(
+                        UUID.fromString(rs.getString("uuid")),
+                        rs.getInt("daily_time"), rs.getInt("total_time"), rs.getInt("login"),
+                        rs.getString("last_updated"), rs.getString("last_login"),
+                        rs.getString("claimed_segments"), rs.getString("reminded_segments"),
+                        rs.getString("milestones_claimed")
+                ));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Failed to load all player data for leaderboard preload", e);
+        }
+        return list;
+    }
+
     public CompletableFuture<List<PlayerDataRecord>> getTopPlayers(String orderBy, int limit) {
         return track(CompletableFuture.supplyAsync(() -> {
             List<PlayerDataRecord> list = new ArrayList<>();

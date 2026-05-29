@@ -57,6 +57,7 @@ public class DailyRewards extends JavaPlugin {
 
         playerTimeManager = new PlayerTimeManager(getLogger(), databaseManager);
         playerTimeManager.setMaxCacheSize(configManager.cacheMaxSize());
+        playerTimeManager.preloadAll();
         playerNameCache = new PlayerNameCache();
 
         rewardManager = new RewardManager(getLogger(), getDataFolder());

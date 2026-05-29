@@ -107,6 +107,14 @@ public class RewardScheduler {
             RewardManager.RewardSegment seg = segments.get(i);
             if (!plugin.getPlayerTimeManager().hasClaimed(player.getUniqueId(), i)
                     && playerTime >= seg.time()) {
+                player.sendMessage(plugin.getMessageManager().get("auto-grant.processing",
+                        Map.of("time", String.valueOf(seg.time() / 60))));
+                if (!plugin.getRewardManager().grantRewards(player, i, loginBonus)) {
+                    player.sendMessage(plugin.getMessageManager().get("gui.inventory-full"));
+                    continue;
+                }
+                plugin.getPlayerTimeManager().setClaimed(player.getUniqueId(), i);
+
                 var msg = plugin.getMessageManager().get(
                         plugin.getConfigManager().modeAutoActionbar() ? "auto-grant.actionbar" : "auto-grant.chat",
                         Map.of("time", String.valueOf(seg.time() / 60)));
@@ -115,11 +123,6 @@ public class RewardScheduler {
                 } else {
                     player.sendMessage(msg);
                 }
-                if (!plugin.getRewardManager().grantRewards(player, i, loginBonus)) {
-                    player.sendMessage(plugin.getMessageManager().get("gui.inventory-full"));
-                    continue;
-                }
-                plugin.getPlayerTimeManager().setClaimed(player.getUniqueId(), i);
                 if (plugin.getConfigManager().modeAutoSound()) {
                     player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.5f, 1.0f);
                 }

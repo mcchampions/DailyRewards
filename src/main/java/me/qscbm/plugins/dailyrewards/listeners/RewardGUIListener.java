@@ -79,6 +79,7 @@ public class RewardGUIListener implements Listener {
         }
 
         double loginBonus = plugin.getLoginManager().getMultiplier(player.getUniqueId());
+        player.sendMessage(plugin.getMessageManager().get("gui.processing"));
         if (!plugin.getRewardManager().grantRewards(player, segmentIndex, loginBonus)) {
             player.sendMessage(plugin.getMessageManager().get("gui.inventory-full"));
             player.closeInventory();
