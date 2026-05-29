@@ -1,7 +1,7 @@
 # ==========================================
 # DailyRewards v2.0 - 消息配置文件
 # ==========================================
-config-version: 3
+config-version: 4
 # 支持 MiniMessage 格式和传统 & 颜色代码
 # 变量: %player% %time% %remaining% %login_days% %total_time%
 
