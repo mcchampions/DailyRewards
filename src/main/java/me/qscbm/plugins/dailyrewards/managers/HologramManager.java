@@ -336,7 +336,7 @@ public class HologramManager {
     private static Component buildEntry(int rank, String name, int value, String unit) {
         TextColor rankColor = switch (rank) {
             case 1 -> TextColor.color(0xFFD700);
-            case 2 -> TextColor.color(0xC0C0C0);
+            case 2 -> WHITE;
             case 3 -> TextColor.color(0xCD7F32);
             default -> GRAY;
         };
