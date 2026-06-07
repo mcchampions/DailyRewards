@@ -38,8 +38,8 @@ public class DailyRewards extends JavaPlugin {
         saveResourceIfMissing("messages.yml");
 
         // Auto-merge missing keys on version change
-        ConfigUpdater.update(this, "config.yml", 3);
-        ConfigUpdater.update(this, "messages.yml", 2);
+        ConfigUpdater.update(this, "config.yml");
+        ConfigUpdater.update(this, "messages.yml");
         reloadConfig();
         configManager = new ConfigManager();
         configManager.reload(getConfig(), getDataFolder());

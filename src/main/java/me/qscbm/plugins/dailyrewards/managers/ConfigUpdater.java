@@ -23,22 +23,22 @@ public final class ConfigUpdater {
      *
      * @param plugin          the plugin instance
      * @param fileName        file name (e.g. "config.yml")
-     * @param expectedVersion the version the plugin expects
      */
-    public static void update(Plugin plugin, String fileName, int expectedVersion) {
+    public static void update(Plugin plugin, String fileName) {
         File file = new File(plugin.getDataFolder(), fileName);
         if (!file.exists()) return;
 
         YamlConfiguration existing = YamlConfiguration.loadConfiguration(file);
         int currentVersion = existing.getInt("config-version", 0);
 
-        if (currentVersion >= expectedVersion) return;
 
         // Load default from JAR
         InputStream jarStream = plugin.getResource(fileName);
         if (jarStream == null) return;
         YamlConfiguration defaults = YamlConfiguration.loadConfiguration(new InputStreamReader(jarStream));
 
+        int expectedVersion = defaults.getInt("config-version", 0);
+        if (currentVersion >= expectedVersion) return;
         // Merge missing keys
         mergeSection(defaults, existing, "");
 
