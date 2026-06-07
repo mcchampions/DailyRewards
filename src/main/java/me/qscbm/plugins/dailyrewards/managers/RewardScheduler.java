@@ -32,6 +32,7 @@ public class RewardScheduler {
 
     public void start() {
         running = true;
+        initializeResetState();
         int interval = plugin.getConfigManager().trackingInterval();
         int saveInterval = plugin.getConfigManager().storageSaveInterval();
 
@@ -79,6 +80,12 @@ public class RewardScheduler {
                 plugin.getLogger().info("Daily claim fields reset; total online time is preserved");
             }
         }, 1L, 600L);
+    }
+
+    private void initializeResetState() {
+        LocalDate today = LocalDate.now();
+        LocalTime resetTime = LocalTime.of(plugin.getConfigManager().resetHour(), plugin.getConfigManager().resetMinute());
+        lastResetDate = LocalTime.now().isBefore(resetTime) ? today.minusDays(1) : today;
     }
 
     public CompletableFuture<Void> stop() {
