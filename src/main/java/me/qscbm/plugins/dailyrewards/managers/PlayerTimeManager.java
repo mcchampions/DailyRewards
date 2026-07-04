@@ -58,6 +58,7 @@ public class PlayerTimeManager {
                 existing.dailyTime.set(0);
                 existing.claimedSegments.clear();
                 existing.remindedSegments.clear();
+                existing.fullInventoryNotified.clear();
                 existing.lastDate = today;
                 existing.markDirty();
             }
@@ -82,6 +83,7 @@ public class PlayerTimeManager {
             if (!cached.dirty) {
                 cached.totalTime.set(record.totalTime());
                 cached.loginDays.set(record.login());
+                cached.lastLogin = record.lastLogin();
 
                 if (today.equals(record.lastUpdated())) {
                     cached.dailyTime.set(record.dailyTime());
@@ -102,6 +104,9 @@ public class PlayerTimeManager {
                 }
                 if (record.login() > cached.loginDays.get()) {
                     cached.loginDays.set(record.login());
+                }
+                if (cached.lastLogin == null) {
+                    cached.lastLogin = record.lastLogin();
                 }
                 if (today.equals(record.lastUpdated())) {
                     cached.dailyTime.updateAndGet(current -> Math.max(current, record.dailyTime()));
@@ -140,6 +145,7 @@ public class PlayerTimeManager {
             PlayerData data = new PlayerData(uuid, 0, 0, today);
             data.totalTime.set(record.totalTime());
             data.loginDays.set(record.login());
+            data.lastLogin = record.lastLogin();
             if (today.equals(record.lastUpdated())) {
                 data.dailyTime.set(record.dailyTime());
                 data.claimedSegments.addAll(parseSegmentList(record.claimedSegments()));
@@ -193,6 +199,11 @@ public class PlayerTimeManager {
         if (data != null) { data.loginDays.set(loginDays); data.markDirty(); }
     }
 
+    public void setLastLogin(UUID uuid, String date) {
+        PlayerData data = cache.get(uuid);
+        if (data != null) { data.lastLogin = date; data.markDirty(); }
+    }
+
     public void addTime(UUID uuid, int seconds) {
         PlayerData data = cache.get(uuid);
         if (data != null) {
@@ -209,6 +220,7 @@ public class PlayerTimeManager {
             data.lastDate = LocalDate.now().toString();
             data.claimedSegments.clear();
             data.remindedSegments.clear();
+            data.fullInventoryNotified.clear();
             data.markDirty();
         }
     }
@@ -216,11 +228,13 @@ public class PlayerTimeManager {
     public void resetAllForNewDay(String today) {
         for (PlayerData data : cache.values()) {
             if (!today.equals(data.lastDate) || data.dailyTime.get() != 0
-                    || !data.claimedSegments.isEmpty() || !data.remindedSegments.isEmpty()) {
+                    || !data.claimedSegments.isEmpty() || !data.remindedSegments.isEmpty()
+                    || !data.fullInventoryNotified.isEmpty()) {
                 data.dailyTime.set(0);
                 data.lastDate = today;
                 data.claimedSegments.clear();
                 data.remindedSegments.clear();
+                data.fullInventoryNotified.clear();
                 data.markDirty();
             }
         }
@@ -251,6 +265,21 @@ public class PlayerTimeManager {
     public void setMilestoneClaimed(UUID uuid, int days) {
         PlayerData data = cache.get(uuid);
         if (data != null) { data.claimedMilestones.add(days); data.markDirty(); }
+    }
+
+    public boolean hasNotifiedFullInventory(UUID uuid, int segmentIndex) {
+        PlayerData data = cache.get(uuid);
+        if (data != null) data.lastAccess = System.currentTimeMillis();
+        if (data == null) return false;
+        Long lastNotify = data.fullInventoryNotified.get(segmentIndex);
+        long cooldownMs = me.qscbm.plugins.dailyrewards.DailyRewards.getInstance()
+                .getConfigManager().autoGrantFullInventoryNotifyCooldown() * 1000L;
+        return lastNotify != null && (System.currentTimeMillis() - lastNotify) < cooldownMs;
+    }
+
+    public void setNotifiedFullInventory(UUID uuid, int segmentIndex) {
+        PlayerData data = cache.get(uuid);
+        if (data != null) { data.fullInventoryNotified.put(segmentIndex, System.currentTimeMillis()); }
     }
 
     public boolean hasMilestoneClaimed(UUID uuid, int days) {
@@ -442,9 +471,11 @@ public class PlayerTimeManager {
         volatile CompletableFuture<Void> saveInProgress;
         volatile long lastAccess = System.currentTimeMillis();
         volatile String lastDate;
+        volatile String lastLogin; // actual last login date, not reset by daily refresh
         final Set<Integer> claimedSegments = ConcurrentHashMap.newKeySet();
         final Set<Integer> remindedSegments = ConcurrentHashMap.newKeySet();
         final Set<Integer> claimedMilestones = ConcurrentHashMap.newKeySet();
+        final ConcurrentHashMap<Integer, Long> fullInventoryNotified = new ConcurrentHashMap<>();
         final AtomicLong version = new AtomicLong();
         final AtomicBoolean evictionSaveInProgress = new AtomicBoolean();
 
@@ -471,7 +502,7 @@ public class PlayerTimeManager {
             lastAccess = System.currentTimeMillis();
             return new PlayerDataRecord(
                     uuid, dailyTime.get(), totalTime.get(), loginDays.get(),
-                    lastDate, lastDate,
+                    lastDate, lastLogin != null ? lastLogin : lastDate,
                     sortedJoin(claimedSegments), sortedJoin(remindedSegments),
                     sortedJoin(claimedMilestones)
             );

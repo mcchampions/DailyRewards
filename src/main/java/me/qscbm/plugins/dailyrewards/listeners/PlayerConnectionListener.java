@@ -34,6 +34,9 @@ public class PlayerConnectionListener implements Listener {
                     .thenAccept(loginDays -> {
                         // Sync login days back to PlayerTimeManager
                         plugin.getPlayerTimeManager().setLoginDays(player.getUniqueId(), loginDays);
+                        plugin.getPlayerTimeManager().setLastLogin(player.getUniqueId(), today);
+                        // Immediately persist login data to survive crashes
+                        plugin.getPlayerTimeManager().save(player.getUniqueId());
 
                         // All Bukkit API calls must run on the main region thread
                         plugin.getServer().getGlobalRegionScheduler().run(plugin, scheduledTask -> {
@@ -50,8 +53,10 @@ public class PlayerConnectionListener implements Listener {
                     }), 1, java.util.concurrent.TimeUnit.SECONDS);
         }
 
-        // Send auto-grant catchup after a short delay
-        plugin.getServer().getAsyncScheduler().runDelayed(plugin, task -> plugin.getServer().getGlobalRegionScheduler().run(plugin, scheduledTask -> plugin.getRewardScheduler().checkAndGrant(player)), 2, java.util.concurrent.TimeUnit.SECONDS);
+        // Send auto-grant catchup after a short delay (only if auto-grant is enabled)
+        if (plugin.getConfigManager().modeAutoGrant()) {
+            plugin.getServer().getAsyncScheduler().runDelayed(plugin, task -> plugin.getServer().getGlobalRegionScheduler().run(plugin, scheduledTask -> plugin.getRewardScheduler().checkAndGrant(player)), 2, java.util.concurrent.TimeUnit.SECONDS);
+        }
 
         // Refresh holograms after data loads
         plugin.getServer().getAsyncScheduler().runDelayed(plugin, task -> plugin.getServer().getGlobalRegionScheduler().run(plugin, scheduledTask -> plugin.getHologramManager().refreshAll()), 3, java.util.concurrent.TimeUnit.SECONDS);

@@ -1,7 +1,7 @@
 # ==========================================
 # DailyRewards v2.0 - 主配置文件
 # ==========================================
-config-version: 3
+config-version: 4
 
 # 每日重置时间 (24小时制, 服务器本地时间)
 reset:
@@ -26,6 +26,10 @@ mode:
   auto-sound: true
   # 达到条件时发送可点击提醒消息
   auto-reminder: true
+  # 自动发放时背包满了的处理方式: message(定时提醒) 或 drop(物品自然掉落在玩家附近)
+  auto-grant-full-inventory: message
+  # message模式下的提醒间隔(秒), 默认1800秒(30分钟)
+  auto-grant-full-inventory-notify-cooldown: 1800
 
 # 连续登录系统
 login:
@@ -101,7 +105,7 @@ storage:
 # 内存缓存
 cache:
   # 最大缓存玩家数 - 超过后按LRU淘汰最久未访问的离线玩家
-  max-size: 10000
+  max-size: 666
 
 # GUI设置
 gui:

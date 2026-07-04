@@ -20,6 +20,8 @@ public class ConfigManager {
     private int trackingInterval;
     private boolean trackingAsync;
     private boolean modeAutoGrant, modeGuiEnabled, modeAutoActionbar, modeAutoSound, modeAutoReminder;
+    private String autoGrantFullInventory;
+    private int autoGrantFullInventoryNotifyCooldown;
     private boolean loginEnabled;
     private double loginMultiplier;
     private int loginMaxBonus;
@@ -57,6 +59,8 @@ public class ConfigManager {
         modeAutoActionbar = config.getBoolean("mode.auto-actionbar", true);
         modeAutoSound = config.getBoolean("mode.auto-sound", true);
         modeAutoReminder = config.getBoolean("mode.auto-reminder", true);
+        autoGrantFullInventory = config.getString("mode.auto-grant-full-inventory", "message");
+        autoGrantFullInventoryNotifyCooldown = Math.max(60, config.getInt("mode.auto-grant-full-inventory-notify-cooldown", 1800));
 
         loginEnabled = config.getBoolean("login.enabled", true);
         loginMultiplier = config.getDouble("login.multiplier", 0.05);

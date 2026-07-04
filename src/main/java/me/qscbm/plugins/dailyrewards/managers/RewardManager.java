@@ -170,6 +170,27 @@ public class RewardManager {
     }
 
     /**
+     * Grants rewards by dropping item rewards naturally at the player's location.
+     * Non-item rewards (commands, effects, etc.) are granted normally.
+     * Always returns true — items always "fit" on the ground.
+     */
+    public void grantRewardsByDropping(Player player, int segmentIndex, double loginBonus) {
+        List<RewardSegment> segments = getSegmentsForPlayer(player);
+        if (segmentIndex < 0 || segmentIndex >= segments.size()) return;
+
+        List<Reward> rewards = segments.get(segmentIndex).rewards();
+        for (Reward reward : rewards) {
+            if (reward instanceof ItemReward ir) {
+                int amount = applyLoginBonus(ir.amount, loginBonus, false);
+                ItemStack item = createItemStack(ir, amount);
+                player.getWorld().dropItemNaturally(player.getLocation(), item);
+            } else {
+                grant(player, reward, loginBonus);
+            }
+        }
+    }
+
+    /**
      * Grants raw rewards from a list of maps (used for milestone rewards).
      * Returns false if the player's inventory cannot hold the item rewards.
      */

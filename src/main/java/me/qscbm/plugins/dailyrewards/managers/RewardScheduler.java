@@ -117,8 +117,17 @@ public class RewardScheduler {
                 player.sendMessage(plugin.getMessageManager().get("auto-grant.processing",
                         Map.of("time", String.valueOf(seg.time() / 60))));
                 if (!plugin.getRewardManager().grantRewards(player, i, loginBonus)) {
-                    player.sendMessage(plugin.getMessageManager().get("gui.inventory-full"));
-                    continue;
+                    // Inventory full — handle based on config
+                    if ("drop".equals(plugin.getConfigManager().autoGrantFullInventory())) {
+                        plugin.getRewardManager().grantRewardsByDropping(player, i, loginBonus);
+                    } else {
+                        // Message mode: notify once per segment per day
+                        if (!plugin.getPlayerTimeManager().hasNotifiedFullInventory(player.getUniqueId(), i)) {
+                            player.sendMessage(plugin.getMessageManager().get("gui.inventory-full"));
+                            plugin.getPlayerTimeManager().setNotifiedFullInventory(player.getUniqueId(), i);
+                        }
+                        continue;
+                    }
                 }
                 plugin.getPlayerTimeManager().setClaimed(player.getUniqueId(), i);
 

@@ -286,7 +286,9 @@ public class DailyRewardsCommand implements CommandExecutor {
             return true;
         }
         plugin.getPlayerTimeManager().addTime(target.getUniqueId(), seconds);
-        plugin.getRewardScheduler().checkAndGrant(target);
+        if (plugin.getConfigManager().modeAutoGrant()) {
+            plugin.getRewardScheduler().checkAndGrant(target);
+        }
         sender.sendMessage(msg("&a已为 " + target.getName() + " 添加 " + seconds + " 秒在线时间"));
         target.sendMessage(msg("&a管理员已为你添加 " + (seconds / 60) + " 分钟在线时间"));
         return true;
@@ -299,7 +301,9 @@ public class DailyRewardsCommand implements CommandExecutor {
         }
         int count = 0;
         for (org.bukkit.entity.Player p : Bukkit.getOnlinePlayers()) {
-            plugin.getRewardScheduler().checkAndGrant(p);
+            if (plugin.getConfigManager().modeAutoGrant()) {
+                plugin.getRewardScheduler().checkAndGrant(p);
+            }
             count++;
         }
         plugin.getHologramManager().refreshAll();
