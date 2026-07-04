@@ -298,8 +298,10 @@ public class PlayerTimeManager {
         PlayerData data = cache.get(uuid);
         if (data != null) {
             data.online = false;
+            if (data.dirty) {
+                save(uuid);
+            }
         }
-        save(uuid);
     }
 
     public int getCacheSize() {
