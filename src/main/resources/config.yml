@@ -105,7 +105,7 @@ storage:
 # 内存缓存
 cache:
   # 最大缓存玩家数 - 超过后按LRU淘汰最久未访问的离线玩家
-  max-size: 666
+  max-size: 1000
 
 # GUI设置
 gui:
