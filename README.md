@@ -317,3 +317,7 @@ src/main/resources/
 ## 反馈
 
 如果遇到问题，可以提交 Issue。反馈时建议附上服务端版本、插件版本、相关配置片段和报错日志，方便定位。
+
+## 相关链接
+
+Minebbs: [https://www.minebbs.com/resources/dailyrewards.16636/](https://www.minebbs.com/resources/dailyrewards.16636/)
